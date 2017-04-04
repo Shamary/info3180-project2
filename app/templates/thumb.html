@@ -3,14 +3,14 @@
 
 <div ng-app="thumbnail" ng-controller="myCtlr">
         <div ng-repeat="image in img_lst track by $index">
-            <ul><li>{{image}}</li></ul>
+            <!--<ul><li>{{image}}</li></ul>-->
             <img src='{{image}}'></img>
         </div>
 </div>
 
 {% endblock %}
+
+{% block js %}
 <script src="../static/js/angular.min.js"></script>
 <script src="../static/js/app.js"></script>
-{% block js %}
-
 {% endblock %}
