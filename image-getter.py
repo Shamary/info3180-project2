@@ -1,6 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
 import urlparse
+import json
+
 
 url = "https://www.walmart.com/ip/54649026"
 result = requests.get(url)
@@ -22,5 +24,5 @@ if thumbnail_spec and thumbnail_spec['href']:
 
 image = """<img src="%s"><br />"""
 for img in soup.findAll("img", src=True):
-   print image % urlparse.urljoin(url, img["src"])
+   print img["src"]#image % urlparse.urljoin(url, img["src"])
    print ''
