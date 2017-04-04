@@ -11,6 +11,8 @@ from bs4 import BeautifulSoup
 import requests
 import urlparse
 
+from image_getter import *
+
 ###
 # Routing for your application.
 ###
@@ -21,37 +23,19 @@ def home():
     return render_template('home.html')
 
 
-@app.route('/api/thumbnails',methods=["POST"])
+@app.route('/api/thumbnails',methods=["POST","GET"])
 def api():
-    if(request.method=="POST"):
-        url = "https://www.walmart.com/ip/54649026"
-        result = requests.get(url)
-        soup = BeautifulSoup(result.text, "html.parser")
+    if(request.method=="POST" or request.method=="GET"):
         
-        tlist=[]
-        
-        og_image = (soup.find('meta', property='og:image') or
-                    soup.find('meta', attrs={'name': 'og:image'}))
-        if og_image and og_image['content']:
-            print og_image['content']
-            print ''
-        
-        thumbnail_spec = soup.find('link', rel='image_src')
-        if thumbnail_spec and thumbnail_spec['href']:
-            print thumbnail_spec['href']
-            print ''
-            
-        image = """<img src="%s"><br />"""
-        for img in soup.findAll("img", src=True):
-            #print img["src"]#image % urlparse.urljoin(url, img["src"])
-            #print ''
-            tlist+=[img["src"]]
-        
-        msg={"error":None,"message":"Success","thumbnails":tlist}
+        msg={"error":None,"message":"Success","thumbnails":getLst()}
         
         #res=Response(response=msg,status=200,mimetype="application/json")
         
         return jsonify(msg)
+
+@app.route('/thumbnails/view')
+def tview():
+    return render_template("thumb.html")
 
 ###
 # The functions below should be applicable to all Flask apps.
