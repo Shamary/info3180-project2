@@ -1,26 +1,16 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <script src="../static/js/angular.min.js"></script>
-    </head>
-    <body>
-        <script>
-            var app=angular.module("thumbnail",[]);
-            app.controller("myCtlr",function($scope,$http){
-                $http.post("http://info3180-lab7-shamary.c9users.io:8080/api/thumbnails","")
-                .then(function(result){
-                    $scope.img_lst=result.data.thumbnails;
-                    
-                    alert(result.data.thumbnails);
-                });
-            });
-        </script>
-        
-        <div ng-app="thumbnail" ng-controller="myCtlr">
-            <div ng-repeat="image in img_lst track by $index">
-                <ul><li>{{image}}</li></ul>
-                <img src='{{image}}'></img>
-            </div>
+{% extends "base.html" %}
+{% block main %}
+
+<div ng-app="thumbnail" ng-controller="myCtlr">
+        <div ng-repeat="image in img_lst track by $index">
+            <ul><li>{{image}}</li></ul>
+            <img src='{{image}}'></img>
         </div>
-    </body>
-</html>
+</div>
+
+{% endblock %}
+<script src="../static/js/angular.min.js"></script>
+<script src="../static/js/app.js"></script>
+{% block js %}
+
+{% endblock %}
