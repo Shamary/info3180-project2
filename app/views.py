@@ -5,17 +5,26 @@ Werkzeug Documentation:  http://werkzeug.pocoo.org/documentation/
 This file creates your application.
 """
 
-from app import app
+from app import app,db,login_m
 from flask import render_template, request, redirect, url_for, jsonify, Response
 from bs4 import BeautifulSoup
 import requests
 import urlparse
 
 from image_getter import *
+from forms import *
+from models import User
+
 
 ###
 # Routing for your application.
 ###
+
+#@app.route('/')
+#def index():
+    #"""Render website's home page."""
+    #return app.send_static_file('index.html')
+    
 
 @app.route('/')
 def home():
@@ -23,15 +32,50 @@ def home():
     return render_template('home.html')
 
 
-@app.route('/api/thumbnails',methods=["POST","GET"])
-def api():
-    if(request.method=="POST" or request.method=="GET"):
+@app.route('/register')
+def register():
+    form=RegisterForm()
+    return render_template("register.html",form=form);
+
+@app.route('/api/users/register', methods=['POST'])
+def signup():
+        #write to db
+        fname=request.form['fname']
+        lname=request.form['lname']
+        uname=request.form['uname']
+        pwd=request.form['password']
         
-        msg={"error":None,"message":"Success","thumbnails":getLst()}
+        user=User(fname=fname,lname=lname,uname=uname,password=pwd)
         
-        #res=Response(response=msg,status=200,mimetype="application/json")
+        db.session.add(user)
+        db.session.commit()
+        #pass
+    
+@app.route('/api/users/login',methods=["POST"])
+def login():
+    pass
+    
+@app.route('/api/users/logout',methods=["POST"])
+def logout():
+    pass
+    
+@app.route('/api/users/<userid>/wishlist',methods=["GET","POST"])
+def wishes(userid):
+    pass
+    
+@app.route('/api/thumbnails',methods=["GET"])
+def get_images():
+    if(request.method=="GET"):
+        url="https://www.walmart.com/ip/54649026"#default
+        soup=work_on(url)
+        lst=getLst(soup)
+        
+        msg={"error":None,"message":"Success","thumbnails":lst}
         
         return jsonify(msg)
+    #pass
+
+
 
 @app.route('/thumbnails/view')
 def tview():
