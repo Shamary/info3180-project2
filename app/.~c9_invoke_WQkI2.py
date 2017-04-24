@@ -44,12 +44,11 @@ def signup():
         #write to db
         fname=request.form['fname']
         lname=request.form['lname']
-        gender=request.form['gender']
-        age=request.form['age'];
+        g
         uname=request.form['uname']
         pwd=request.form['password']
         
-        user=User(fname=fname,lname=lname,age=age,gender=gender,uname=uname,password=pwd)
+        user=User(fname=fname,lname=lname,uname=uname,password=pwd)
         
         db.session.add(user)
         db.session.commit()
@@ -59,7 +58,7 @@ def signup():
 
 @app.route('/api/users/login',methods=["POST"])
 def login():
-    pass
+        password = form.password
 
     form = LoginForm()
     if request.method == "POST" and form.validate_on_submit():

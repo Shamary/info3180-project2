@@ -44,12 +44,11 @@ def signup():
         #write to db
         fname=request.form['fname']
         lname=request.form['lname']
-        gender=request.form['gender']
-        age=request.form['age'];
+        g
         uname=request.form['uname']
         pwd=request.form['password']
         
-        user=User(fname=fname,lname=lname,age=age,gender=gender,uname=uname,password=pwd)
+        user=User(fname=fname,lname=lname,uname=uname,password=pwd)
         
         db.session.add(user)
         db.session.commit()
@@ -67,7 +66,7 @@ def login():
         password = form.password.data
         
         user = User.query.filter_by(username=username, password=password).first()
-        
+            return redirect(url_for(''))
         if user is not None:
         
             login_user(user)

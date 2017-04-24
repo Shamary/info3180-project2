@@ -44,12 +44,11 @@ def signup():
         #write to db
         fname=request.form['fname']
         lname=request.form['lname']
-        gender=request.form['gender']
-        age=request.form['age'];
+        g
         uname=request.form['uname']
         pwd=request.form['password']
         
-        user=User(fname=fname,lname=lname,age=age,gender=gender,uname=uname,password=pwd)
+        user=User(fname=fname,lname=lname,uname=uname,password=pwd)
         
         db.session.add(user)
         db.session.commit()
@@ -64,7 +63,7 @@ def login():
     form = LoginForm()
     if request.method == "POST" and form.validate_on_submit():
         username = form.uname.data
-        password = form.password.data
+        user = User.query.filter_by(username=username, password=password).first()
         
         user = User.query.filter_by(username=username, password=password).first()
         
