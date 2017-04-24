@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<div class="reg_cont" ng-app="project" ng-controller="myCtlr">
+    <form>
+    <!--{{form.csrf_token}}-->
+        <!--{{form.fname.label}}
+        {{form.fname(placeholder="Enter your first name")}}
+        {{form.lname.label}}
+        {{form.lname(placeholder="Enter your last name")}}
+        {{form.username.label}}
+        {{form.username(placeholder="Enter your username")}}
+        {{form.password.label}}
+        {{form.password(placeholder="Enter your password")}}
+        {{form.ispassword.label}}
+        {{form.ispassword()}}-->
+        
+        <input type="text" ng-model="fname" placeholder="firstname" required/><br>
+        <input type="text" ng-model="lname" placeholder="lastname" required/><br>
+        <select ng-model="gender">
+            <option>M</option>
+            <option>F</option>
+            <option>Other</option>
+        </select><br>
+        <input type="number" ng-model="age" placeholder="age" max="110" required/><br>
+        <button type="button" ng-click="fsubmit()">Register</button>
+        <!--<button type="button">Register</button>-->
+    </form>
+</div>
+
+{% block js %}
+<script src="../static/js/angular.min.js"></script>
+<script src="../static/js/app.js"></script>
+{% endblock %}
+
+{% endblock %}
