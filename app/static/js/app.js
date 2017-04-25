@@ -45,14 +45,14 @@ app.controller("myCtlr",function($scope,$http){
             data:{fname:$scope.fname,lname:$scope.lname,gender:$scope.gender,age:$scope.age,
             uname:$scope.uname,password:$scope.password}
         })
-        .success(function(data,status,headers,config)
+        /*.success(function(data,status,headers,config)
         {
            //alert(data); 
         })
         .error(function(data,status,headers,config)
         {
             //alert("failure: "+data);
-        });
+        });*/
         
         $scope.reset();
     };

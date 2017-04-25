@@ -54,6 +54,11 @@ def signup():
         db.session.add(user)
         db.session.commit()
         #pass
+        
+        #return response
+        #res={"error":None,"status":"OK","message":"Success"}
+        
+        #return res;
 
 
 

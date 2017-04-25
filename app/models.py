@@ -9,7 +9,7 @@ class User(db.Model):
     age=db.Column(db.Integer)
     gender=db.Column(db.String(10));
     uname=db.Column(db.String(50),unique=True)
-    password=db.Column(db.String(300), unique=True)
+    password=db.Column(db.String(300))
     
     def is_authenticated(self):
         return True;
