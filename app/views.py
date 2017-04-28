@@ -52,8 +52,8 @@ def register():
 
 @app.route('/login', methods=["GET"])
 def loginUI():
-    form = LoginForm()
-    return render_template("login.html",form=form)
+    #form = LoginForm()
+    return render_template("login.html")
 
 
 ######   

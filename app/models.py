@@ -41,7 +41,7 @@ class User(db.Model):
         return '<User %r>' % (self.username)    
         
         
-class Item(db.Model):
+class Wish(db.Model):
     
     itemid=db.Column(db.Integer,primary_key=True)
     #uname=db.Column(db.String(50),unique=True)
