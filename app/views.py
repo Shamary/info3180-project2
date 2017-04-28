@@ -9,15 +9,15 @@ from app import app, db, login_m
 from flask import render_template, request, redirect, url_for, jsonify, Response, flash, session
 from bs4 import BeautifulSoup
 from flask_login import login_user, logout_user, current_user, login_required
-from flask_jwt import JWT, jwt_required, current_identity
-from werkzeug.security import safe_str_cmp
+#from flask_jwt import JWT, jwt_required, current_identity
+#from werkzeug.security import safe_str_cmp
 import requests
 import urlparse
 import smtplib
 import random
 
 from image_getter import *
-from forms import *
+#from forms import *
 from models import User,Wish
 
 
@@ -62,8 +62,8 @@ def add_item():
 
 @app.route('/register')
 def register():
-    form=RegisterForm()
-    return render_template("register.html",form=form);
+    #form=RegisterForm()
+    return render_template("register.html");
 
 
 
@@ -75,7 +75,7 @@ def loginUI():
 
 @app.route('/secure-page')
 @login_required
-@jwt_required
+#@jwt_required
 def secure_page():
     return render_template("secure-page.html")
 
@@ -86,15 +86,6 @@ def secure_page():
 ######
 @app.route('/api/users/register', methods=["POST"])
 def signup():
-    # form = RegisterForm()
-    
-    # fname = form.fname.data
-    # lname = form.lname.data
-    # gender = form.gender.data
-    # age = form.age.data
-    # uname = form.username.data
-    # pwd = form.password.data
-    # ispwd = form.ispassword.data
     
     uid = random.randint(1000,1999)
     #write to db
@@ -104,18 +95,20 @@ def signup():
     age=request.form['age'];
     uname=request.form['uname']
     pwd=request.form['password']
+    ispwd=request.form['ispassword']
     
-    # if pwd == ispwd:
+    if (pwd == ispwd):
         
-    user=User(userid=uid,fname=fname,lname=lname,age=age,sex=gender,uname=uname,password=pwd)
-    db.session.add(user)
-    db.session.commit()
-    flash('User Profile Added','success')
-    return url_for('loginUI')
+        user=User(userid=uid,fname=fname,lname=lname,age=age,sex=gender,uname=uname,password=pwd)
+        db.session.add(user)
+        db.session.commit()
+        flash('User Profile Added','success')
+        return url_for('loginUI')
         
-    # else:
-    #     flash('Incorrect password entered')
-    #     return redirect(url_for('register'))
+    else:
+        
+        flash('Incorrect password entered')
+        return redirect(url_for('register'))
     
     #pass
 
@@ -127,7 +120,6 @@ def signup():
 
 @app.route('/api/users/login',methods=["POST"])
 def login():
-    #form = LoginForm()
     
     uname = request.form['uname']
     password = request.form['password']
@@ -142,9 +134,9 @@ def login():
         session['username']=uname
         session['uid']=user.userid
         
-        token=generate_token()
+        #token=generate_token()
         
-        return url_for('secure_page',userid=current_user.get_id(),token1=token)#returns the url to angular
+        return url_for('secure_page',userid=current_user.get_id())#returns the url to angular
         #return jsonify({"Success":"True"})
     else:
         flash('Username or Password is incorrect','danger')
@@ -156,6 +148,8 @@ def login():
 @app.route('/gsession')
 def gsession():
     return str(session['uid'])
+    
+    
     
 @app.route('/api/users/logout')#,methods=["POST"])
 @login_required
@@ -174,6 +168,7 @@ def logout():
 @app.route('/api/users/<userid>/wishlist',methods=["GET","POST"])
 def wishes(userid):
     
+    iid=random.randint(1000,9999)
     if(request.method=="POST"):
         
         iname=request.form['iname']
@@ -181,14 +176,26 @@ def wishes(userid):
         
         userid=session['uid'];
         
-        wish=Wish(userid=userid,item_name=iname,item_url=url)
+        wish=Wish(itemid=iid,userid=userid,item_name=iname,item_url=url)
         
         db.session.add(wish)
         db.session.commit()
-    else:
-        wish=Wish.query.filter_by(userid=userid).first()
         
-        return wish
+        return "OK"
+        
+    else:
+        wish=Wish.query.filter_by(userid=userid)
+        
+        url=[]
+        names=[]
+        img_ids=[]
+        
+        for u in wish:
+            url+=[u.item_url]
+            names+=[u.item_name]
+            img_ids+=[u.itemid]
+            
+        return jsonify({"status":"OK","error":None,"names":names,"ids":img_ids,"urls":url})
     
     
     
@@ -208,12 +215,12 @@ def get_images():
 
 
 
-@app.route('/api/users/{userid}/wishlist/{itemid}', methods=["DELETE"])
-def delete_wish():
-    itemid=""
-    userid=""
-    User.query.filter_by(itemid=itemid,userid=userid).delete();
-    db.commit()
+@app.route('/api/users/<userid>/wishlist/<itemid>', methods=["DELETE"])
+def delete_wish(userid,itemid):
+    Wish.query.filter_by(itemid=itemid,userid=userid).delete();
+    db.session.commit()
+    
+    return "OK"
     #pass
 
 
@@ -233,8 +240,8 @@ def load_user(id):
     return User.query.get(int(id))
     
     
-
-def share_wishlist():
+@app.route('/api/share_wishlist')
+def share():
     
     from_addr = request.form['']
     to_addr = ''
@@ -250,6 +257,8 @@ def share_wishlist():
     server.login(username, password)
     server.sendmail(from_email, to_addr, message_to_send)
     server.quit()
+    
+    
  
  
     
@@ -262,14 +271,14 @@ userid_table = {u.userid: u for u in User.query.all()}
 def authenticate(username, password):
     user = username_table.get(username, None)
     #if user and werkzeug.security.safe_str_cmp(user.password.encode('utf-8'), password.encode('utf-8')):
-    #    return user"""
+    #    return user
 
 def identity(payload):
     user_id = payload['identity']
     return userid_table.get(user_id, None)
 
 @app.route('/protected')
-@jwt_required()
+#@jwt_required()
 def protected():
     return '%s' % current_identity
 
@@ -279,6 +288,8 @@ def generate_token():
     algorithm='HS256')
     return jsonify(error=None, data={'token': token}, message="Token Generated")
     
+"""
+
 
 ###
 # The functions below should be applicable to all Flask apps.

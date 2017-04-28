@@ -1,12 +1,7 @@
 // Your JavaScript Code here
 var app=angular.module("project",['ngSanitize','mservice']);
 app.controller("myCtlr",function($scope,$http,cflow){
-    /*$http.post("http://info3180-lab7-shamary.c9users.io:8080/api/thumbnails","")
-    .then(function(result){
-        $scope.img_lst=result.data.thumbnails;
-        
-        //alert(result.data.thumbnails);
-    });*/
+    
     $scope.fname="";
     $scope.lname="";
     $scope.gender="M";
@@ -15,6 +10,8 @@ app.controller("myCtlr",function($scope,$http,cflow){
     $scope.password="";
     $scope.ispassword="";
     
+    $scope.img_names=[];
+    $scope.img_id=[];
     $scope.url="";
     $scope.img_lst=[];
     $scope.wishlist=[];
@@ -27,10 +24,18 @@ app.controller("myCtlr",function($scope,$http,cflow){
         
     $http.get("/gsession").then(function(result){
         //alert(result.data);
-        $scope.id=result.data; 
+        $scope.id=result.data;
+        
+        $http.get("/api/users/"+$scope.id+"/wishlist").then(function(response){
+        $scope.wishlist=response.data.urls;
+        $scope.img_names=response.data.names;
+        $scope.img_id=response.data.ids;
+        
+        //alert($scope.wishlist[0]);
+        
+        });
     });
-    
-    //$http.post("/api/users/{userid}/wishlist","");
+
     
     $scope.reset=function()
     {
@@ -169,6 +174,16 @@ app.controller("myCtlr",function($scope,$http,cflow){
         
         window.close($scope.window);
     };
+    
+    $scope.del_wish=function($event)
+    {
+        $scope.item_id=$event.target.value;
+        $http.delete("/api/users/"+$scope.id+"/wishlist/"+$scope.item_id,"").then(function(result){
+            window.location.reload();
+        });
+        //window.open("/api/users/"+$scope.id+"/wishlist/"+$event.target.value)
+        
+    }
 });
 
 app.controller("myCtlr2",function($scope,$http,cflow){
@@ -187,3 +202,30 @@ app.controller("myCtlr2",function($scope,$http,cflow){
 var mservice=angular.module('mservice',[]).service('cflow',function(){
     this.wishlist=[];
 })
+
+
+/*
+angular.module('app')
+.factory 'AuthDataService', [
+  'localStorageService'
+  '$base64'
+  '$http'
+  (localStorageService, $base64, $http) ->
+    current_auth_data = localStorageService.get('authorization_token')
+    if current_auth_data
+      $http.defaults.headers.common['Authorization'] = "Basic #{current_auth_data}"
+
+    return {
+      setAuthData: (authdata) ->
+        return unless authdata
+        encoded = $base64.encode(authdata)
+        localStorageService.set('authorization_token', encoded)
+        $http.defaults.headers.common['Authorization'] = "Basic #{encoded}"
+      clearAuthData: ->
+        localStorageService.remove('authorization_token')
+        $http.defaults.headers.common['Authorization'] = ''
+      getAuthData: ->
+        return localStorageService.get('authorization_token')
+    }
+]
+*/

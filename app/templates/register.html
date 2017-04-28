@@ -12,18 +12,32 @@
         
         {% include 'flash_messages.html' %}
         
-        <input type="text" ng-model="fname" placeholder="firstname" required/><br>
-        <input type="text" ng-model="lname" placeholder="lastname" required/><br>
-        <select ng-model="gender">
-            <option>M</option>
-            <option>F</option>
-            <option>Other</option>
-        </select><br>
-        <input type="number" ng-model="age" placeholder="age" max="110" required/><br>
-        <input type="text" ng-model="uname" placeholder="Username"/><br>
-        <input type="password" ng-model="password" placeholder="Password"/><br>
-        <input type="password" ng-model="ispassword" placeholder="Confirm password"/><br><br>
+        <div class="form-group">
+            <input type="text" ng-model="fname" placeholder="firstname" required/><br>
+        </div>
+        <div class="form-group">
+            <input type="text" ng-model="lname" placeholder="lastname" required/><br>
+        </div>
         
+        <div class="form-group">
+            <select ng-model="gender">
+                <option>M</option>
+                <option>F</option>
+                <option>Other</option>
+            </select><br>
+        </div>
+        <div class="form-group">
+            <input type="number" ng-model="age" placeholder="age" max="110" required/><br>
+        </div>
+        <div class="form-group">
+            <input type="text" ng-model="uname" placeholder="Username"/><br>
+        </div>
+        <div class="form-group">
+            <input type="password" ng-model="password" placeholder="Password"/><br>
+        </div>
+        <div class="form-group">
+            <input type="password" ng-model="ispassword" placeholder="Confirm password"/><br><br>
+        </div>
         
         <button type="submit" class="btn btn-primary" ng-click="fsubmit()">Register</button>
         
