@@ -69,10 +69,10 @@ class Wish(db.Model):
     item_url=db.Column(db.String(500))
     
     
-    def __init__(self, userid,item_name, item_url):
+    """def __init__(self, userid,item_name, item_url):
         self.userid=userid
         self.item_name = item_name
-        self.item_url = item_url
+        self.item_url = item_url"""
 
 
 # Relationship between user and item databases (many to many relationship)

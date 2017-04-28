@@ -23,6 +23,13 @@ app.controller("myCtlr",function($scope,$http,cflow){
     
     $scope.window="";
     
+    $scope.id="";
+        
+    $http.get("/gsession").then(function(result){
+        //alert(result.data);
+        $scope.id=result.data; 
+    });
+    
     //$http.post("/api/users/{userid}/wishlist","");
     
     $scope.reset=function()
@@ -141,10 +148,12 @@ app.controller("myCtlr",function($scope,$http,cflow){
         
         cflow.wishlist=$scope.wishlist;
         
+        $scope.url=$event.target.value;
+        
         $http({
             
             method:'POST',
-            url:"/api/users/{{session['uid']}}/wishlist",
+            url:"/api/users/"+$scope.id+"/wishlist",
             headers:{'Content-Type':'application/x-www-form-urlencoded'},
             transformRequest:function(obj){
                 var str = [];
@@ -152,10 +161,7 @@ app.controller("myCtlr",function($scope,$http,cflow){
                 str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
                 return str.join("&");
             },
-            data:{iname:$scope.iname,url:$event.target.value}
-        }).then(function(result){
-            //alert(result.data);
-            window.location=result.data;
+            data:{iname:$scope.iname,url:$scope.url}
         });
         
         //alert(cflow.wishlist[0]);

@@ -14,6 +14,5 @@ login_m=LoginManager()
 login_m.init_app(app)
 login_m.login_view='login'
 
-
 app.config.from_object(__name__)
 from app import views

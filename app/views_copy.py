@@ -9,8 +9,6 @@ from app import app, db, login_m
 from flask import render_template, request, redirect, url_for, jsonify, Response, flash, session
 from bs4 import BeautifulSoup
 from flask_login import login_user, logout_user, current_user, login_required
-from flask_jwt import JWT, jwt_required, current_identity
-from werkzeug.security import safe_str_cmp
 import requests
 import urlparse
 import smtplib
@@ -48,7 +46,6 @@ def home():
 
 
 @app.route('/wishlist')
-@login_required
 def wishlist():
     return render_template('wishlist.html')
 
@@ -75,11 +72,8 @@ def loginUI():
 
 @app.route('/secure-page')
 @login_required
-@jwt_required
 def secure_page():
     return render_template("secure-page.html")
-
-
 
 ######   
 #API Routes
@@ -142,9 +136,8 @@ def login():
         session['username']=uname
         session['uid']=user.userid
         
-        token=generate_token()
         
-        return url_for('secure_page',userid=current_user.get_id(),token1=token)#returns the url to angular
+        return url_for('secure_page')#returns the url to angular
         #return jsonify({"Success":"True"})
     else:
         flash('Username or Password is incorrect','danger')
@@ -155,7 +148,7 @@ def login():
 
 @app.route('/gsession')
 def gsession():
-    return str(session['uid'])
+    return session['uname']
     
 @app.route('/api/users/logout')#,methods=["POST"])
 @login_required
@@ -178,8 +171,6 @@ def wishes(userid):
         
         iname=request.form['iname']
         url=request.form['url']
-        
-        userid=session['uid'];
         
         wish=Wish(userid=userid,item_name=iname,item_url=url)
         
@@ -210,11 +201,7 @@ def get_images():
 
 @app.route('/api/users/{userid}/wishlist/{itemid}', methods=["DELETE"])
 def delete_wish():
-    itemid=""
-    userid=""
-    User.query.filter_by(itemid=itemid,userid=userid).delete();
-    db.commit()
-    #pass
+    pass
 
 
 
@@ -222,7 +209,6 @@ def delete_wish():
 def tview():
     return render_template("thumb.html")
     
-
 
 ######
 #Functions
@@ -253,32 +239,14 @@ def share_wishlist():
  
  
     
-username_table = {u.uname: u for u in User.query.all()}
-userid_table = {u.userid: u for u in User.query.all()}
+username_table = {u.username: u for u in users}
+userid_table = {u.id: u for u in users}
 
-"""jwt = JWT(app, authenticate, identity)
-
-@jwt.authentication_handler
 def authenticate(username, password):
     user = username_table.get(username, None)
-    #if user and werkzeug.security.safe_str_cmp(user.password.encode('utf-8'), password.encode('utf-8')):
-    #    return user"""
+    if user and safe_str_cmp(user.password.encode('utf-8'), password.encode('utf-8')):
+        return user
 
-def identity(payload):
-    user_id = payload['identity']
-    return userid_table.get(user_id, None)
-
-@app.route('/protected')
-@jwt_required()
-def protected():
-    return '%s' % current_identity
-
-def generate_token():
-    payload = {'sub': '12345', 'email': current_user.uname, 'password': current_user.password}
-    token = jwt.encode(payload, 'some secret', 
-    algorithm='HS256')
-    return jsonify(error=None, data={'token': token}, message="Token Generated")
-    
 
 ###
 # The functions below should be applicable to all Flask apps.
