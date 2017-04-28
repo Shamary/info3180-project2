@@ -141,6 +141,23 @@ app.controller("myCtlr",function($scope,$http,cflow){
         
         cflow.wishlist=$scope.wishlist;
         
+        $http({
+            
+            method:'POST',
+            url:"/api/users/{{session['uid']}}/wishlist",
+            headers:{'Content-Type':'application/x-www-form-urlencoded'},
+            transformRequest:function(obj){
+                var str = [];
+                for(var p in obj)
+                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                return str.join("&");
+            },
+            data:{iname:$scope.iname,url:$event.target.value}
+        }).then(function(result){
+            //alert(result.data);
+            window.location=result.data;
+        });
+        
         //alert(cflow.wishlist[0]);
         //$scope.list_area="<img ng-repeat='item in wishlist track by $index' src='{{item}}' class='col-md-4'></img>"
         

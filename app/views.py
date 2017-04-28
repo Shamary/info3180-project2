@@ -133,9 +133,8 @@ def login():
         login_user(user)
         flash('Login Successful','success')
         
-        uid=User.query.filter_by(uname=uname).with_enities(User.userid)
         session['username']=uname
-        session['uid']=uid
+        session['uid']=user.userid
         
         
         return url_for('secure_page')#returns the url to angular
@@ -153,7 +152,11 @@ def login():
 def logout():
     logout_user()
     flash('User '+session['username']+' Logged out ','success')
-    session.clear()
+    
+    #####cleanup session
+    session.pop('username',None)
+    session.pop('uid',None)
+    
     return redirect(url_for('home'))
 
   
@@ -162,10 +165,13 @@ def logout():
 def wishes(userid):
     
     if(request.method=="POST"):
+        
+        iid=uid = random.randint(1000,1999)
+        
         iname=request.form['iname']
         url=request.form['url']
         
-        wish=Wish(userid=userid,item_name=iname,item_url=url)
+        wish=Wish(itemid=iid,userid=userid,item_name=iname,item_url=url)
         
         db.session.add(wish)
         db.session.commit()

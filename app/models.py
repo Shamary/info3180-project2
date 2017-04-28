@@ -61,7 +61,7 @@ class Wish(db.Model):
 
 class Wish(db.Model):
     
-    itemid=db.Column(db.Integer,unique=True)
+    itemid=db.Column(db.Integer,primary_key=True)
     userid=db.Column(db.ForeignKey('user.userid'),primary_key=True)
     item_name=db.Column(db.String(50),primary_key=True)
     #details=db.Column(db.String(255))
