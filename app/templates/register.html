@@ -3,24 +3,40 @@
 {% block main %}
 
 <div class="reg_cont" ng-app="project" ng-controller="myCtlr">
-    <form>
-    <!--{{form.csrf_token}}-->
-    
-    
-        <!--{{form.fname.label}}
-        {{form.fname(placeholder="Enter your first name")}}
+    <form action="{{ url_for('signup') }}" method="post">
+        <!--
+        {{form.csrf_token}}
         
-        {{form.lname.label}}
-        {{form.lname(placeholder="Enter your last name")}}
+        <div class="form-group">
+            {{form.fname.label}}
+            {{form.fname(placeholder="Enter your first name")}}
+        </div>
         
-        {{form.username.label}}
-        {{form.username(placeholder="Enter your username")}}
+        <div class="form-group">
+            {{form.lname.label}}
+            {{form.lname(placeholder="Enter your last name")}}
+        </div>
         
-        {{form.password.label}}
-        {{form.password(placeholder="Enter your password")}}
+        <div class="form-group">
+            {{form.age.label}}
+            {{form.age(placeholder="Enter your age")}}
+        </div>
         
-        {{form.ispassword.label}}
-        {{form.ispassword()}}-->
+        <div class="form-group">
+            {{form.username.label}}
+            {{form.username(placeholder="Enter your email/username")}}
+        </div>
+        
+        <div class="form-group">
+            {{form.password.label}}
+            {{form.password(placeholder="Enter your password")}}
+        </div>
+        
+        <div class="form-group">
+            {{form.ispassword.label}}
+            {{form.ispassword(placeholder="Re-enter your password")}}
+        </div>
+        -->
         
         <input type="text" ng-model="fname" placeholder="firstname" required/><br>
         <input type="text" ng-model="lname" placeholder="lastname" required/><br>
@@ -33,15 +49,20 @@
         <input type="text" ng-model="uname" placeholder="Username"/><br>
         <input type="password" ng-model="password" placeholder="Password"/><br>
         <input type="password" ng-model="ispassword" placeholder="Confirm password"/><br><br>
+        
+        
         <!--<button type="button" ng-click="fsubmit()">Register</button>-->
+        
         <input type="Submit" name="" ng-click="fsubmit()"/>
+        
         <!--<button type="button">Register</button>-->
     </form>
 </div>
 
+{% endblock %}
+
 {% block js %}
 <script src="../static/js/angular.min.js"></script>
 <script src="../static/js/app.js"></script>
-{% endblock %}
-
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular-sanitize.js"></script>
 {% endblock %}

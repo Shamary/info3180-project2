@@ -5,3 +5,35 @@ body {
 .nav-tabs {
     margin-bottom: 15px;
 }
+
+.search{
+    min-height:300px;
+}
+
+.addB{
+    display:inline-block;
+    border-radius:6px;
+    background-color:#2B5BA1;
+    width:30px;
+    height:27px;
+    color:white;
+    
+    line-height:27px;
+    font-size:15pt;
+    text-align: center;
+    
+    cursor:pointer;
+}
+
+.addB:hover{
+    background-color:#6491D3;
+}
+
+
+.img_choice{
+    cursor:pointer;
+}
+
+.img_choice:hover{
+    width:160px;
+}

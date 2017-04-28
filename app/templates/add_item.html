@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+{% raw %}
+<div ng-app="project" ng-controller="myCtlr" class="search">
+    <form>
+        <input type="text" ng-model="iname" placeholder="Item name"/><br>
+        <input type="text" ng-model="url" placeholder="Enter URL" required/><br>
+        <input type="Submit" name="" ng-click="getImg()"/>
+    </form>
+    <br>
+    <!--<div id="opt" ng-bind-html="bopt"></div>-->
+    <img class="img_choice" ng-repeat='img in img_lst track by $index' ng-src="{{img}}" ng-value="img" ng-click="add($event)" class='col-md-6,img-thumbnail' width="120"></img>
+</div>
+{% endraw %}
+
+{% endblock %}
+
+{% block js %}
+<script src="../static/js/angular.min.js"></script>
+<script src="../static/js/app.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular-sanitize.js"></script>
+{% endblock %}

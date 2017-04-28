@@ -4,3 +4,4 @@ beautifulsoup4
 flask-login
 Flask-WTF
 psycopg2
+Flask-JWT

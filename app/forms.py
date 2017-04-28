@@ -8,9 +8,9 @@ class LoginForm(FlaskForm):
 
 class RegisterForm(FlaskForm):
     fname=StringField('First Name',validators=[InputRequired]);
-    lname=StringField('last Name',validators=[InputRequired]);
-    age=IntegerField('age',validators=[InputRequired])
-    gender=SelectField('gender',choices=['M','F','Other'])
-    username = StringField('email', validators=[InputRequired()])
+    lname=StringField('Last Name',validators=[InputRequired]);
+    age=IntegerField('Age',validators=[InputRequired])
+    gender=SelectField('Gender',choices=['M','F','Other'])
+    username = StringField('Email', validators=[InputRequired()])
     password = PasswordField('Password', validators=[InputRequired()])
     ispassword = PasswordField('Confirm Password', validators=[InputRequired()])
