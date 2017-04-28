@@ -6,7 +6,7 @@ This file creates your application.
 """
 
 from app import app, db, login_m
-from flask import render_template, request, redirect, url_for, jsonify, Response, flash
+from flask import render_template, request, redirect, url_for, jsonify, Response, flash,session
 from bs4 import BeautifulSoup
 from flask_login import login_user, logout_user, current_user, login_required
 import requests
@@ -16,7 +16,7 @@ import random
 
 from image_getter import *
 from forms import *
-from models import User
+from models import User,Wish
 
 
 ###
@@ -32,10 +32,22 @@ from models import User
 ######    
 #HTML Routes
 ######
+
+#user=""
+
 @app.route('/')
 def home():
     """Render website's home page."""
-    return render_template('home.html')
+    if (current_user.is_authenticated):
+        page = 'secure_page'
+    else:
+        return render_template('home.html')
+    return redirect(url_for(page))
+
+
+@app.route('/wishlist')
+def wishlist():
+    return render_template('wishlist.html')
 
 
 
@@ -50,11 +62,18 @@ def register():
     form=RegisterForm()
     return render_template("register.html",form=form);
 
+
+
 @app.route('/login', methods=["GET"])
 def loginUI():
     #form = LoginForm()
     return render_template("login.html")
 
+
+@app.route('/secure-page')
+@login_required
+def secure_page():
+    return render_template("secure-page.html")
 
 ######   
 #API Routes
@@ -86,7 +105,7 @@ def signup():
     db.session.add(user)
     db.session.commit()
     flash('User Profile Added','success')
-    return redirect(url_for('home'))
+    return url_for('loginUI')
         
     # else:
     #     flash('Incorrect password entered')
@@ -109,32 +128,51 @@ def login():
     
     user = User.query.filter_by(uname=uname, password=password).first()
     
-    if user is not None:
+    if (user):
     
         login_user(user)
         flash('Login Successful','success')
-        return redirect(url_for('home'))
+        
+        uid=User.query.filter_by(uname=uname).with_enities(User.userid)
+        session['username']=uname
+        session['uid']=uid
+        
+        
+        return url_for('secure_page')#returns the url to angular
         #return jsonify({"Success":"True"})
     else:
         flash('Username or Password is incorrect','danger')
-        return redirect(url_for('loginUI'))
+        return url_for('loginUI')
         #return jsonify({"Success":"False"})
             
     
     
     
-@app.route('/api/users/logout',methods=["POST"])
+@app.route('/api/users/logout')#,methods=["POST"])
 @login_required
 def logout():
     logout_user()
-    flash('User Logged out','success')
+    flash('User '+session['username']+' Logged out ','success')
+    session.clear()
     return redirect(url_for('home'))
 
   
     
 @app.route('/api/users/<userid>/wishlist',methods=["GET","POST"])
 def wishes(userid):
-    pass
+    
+    if(request.method=="POST"):
+        iname=request.form['iname']
+        url=request.form['url']
+        
+        wish=Wish(userid=userid,item_name=iname,item_url=url)
+        
+        db.session.add(wish)
+        db.session.commit()
+    else:
+        wish=Wish.query.filter_by(userid=userid)
+        
+        return wish
     
     
     
@@ -174,7 +212,11 @@ def load_user(id):
 
 def share_wishlist():
     
-    
+    from_addr = request.form['']
+    to_addr = ''
+    to_name=''
+    subject=''
+    message_to_send = message.format(from_name, from_addr, to_name,to_addr,subject, msg)
     # Credentials (if needed)
     username = ''
     password = ''
@@ -182,7 +224,7 @@ def share_wishlist():
     server = smtplib.SMTP('smtp.gmail.com:587')
     server.starttls()
     server.login(username, password)
-    server.sendmail()
+    server.sendmail(from_email, to_addr, message_to_send)
     server.quit()
     
 

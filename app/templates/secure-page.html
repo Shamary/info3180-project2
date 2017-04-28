@@ -5,16 +5,12 @@
 
 {% include 'flash_messages.html' %}
 
-<p>Create a list of all things you're interested and share it with family and friends.</p>
-<p>Register or log in to start adding to your list</p>
-<a href="{{ url_for('register') }}">Sign Up</a><br>
-<a href="{{ url_for('loginUI') }}">Login</a>
-<!--
+<p>Welcome !</p><br>
+<p>Your current wishlist</p>
 <div ng-app="project" ng-controller="myCtlr2">
-    <div class="addB" ng-click="open()">+</div>
     <img ng-repeat="item in flow.wishlist" ng-src="{{item}}" class="col-md-4"></img>
-</div>
--->
+</div><br><br>
+<a href="{{ url_for('wishlist') }}">Add to Wishlist</a>
 
 {% endblock %}
 

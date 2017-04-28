@@ -19,9 +19,11 @@ app.controller("myCtlr",function($scope,$http,cflow){
     $scope.img_lst=[];
     $scope.wishlist=[];
     
-    $scope.iname=""
+    $scope.iname="";
     
     $scope.window="";
+    
+    //$http.post("/api/users/{userid}/wishlist","");
     
     $scope.reset=function()
     {
@@ -48,13 +50,16 @@ app.controller("myCtlr",function($scope,$http,cflow){
                 return str.join("&");
             },
             data:{uname:$scope.uname,password:$scope.password}
+        }).then(function(result){
+            //alert(result.data);
+            window.location=result.data;
         });
-    }
+    };
     
     $scope.fsubmit=function()
     {
-        var data="fname= "+$scope.fname+"lname= "+$scope.lname+"gender= "+$scope.gender+"age= "+
-        $scope.age+"uname= "+$scope.uname+"password= "+$scope.password;
+        /*var data="fname= "+$scope.fname+"lname= "+$scope.lname+"gender= "+$scope.gender+"age= "+
+        $scope.age+"uname= "+$scope.uname+"password= "+$scope.password;*/
         
         $http({
             
@@ -70,6 +75,9 @@ app.controller("myCtlr",function($scope,$http,cflow){
             },
             data:{fname:$scope.fname,lname:$scope.lname,gender:$scope.gender,age:$scope.age,
             uname:$scope.uname,password:$scope.password}
+        }).then(function(result){
+            //alert(result.data);
+            window.location=result.data;
         });
         /*.success(function(data,status,headers,config)
         {
@@ -78,11 +86,30 @@ app.controller("myCtlr",function($scope,$http,cflow){
         .error(function(data,status,headers,config)
         {
             //alert("failure: "+data);
-        });*/
+        });
         
         $scope.reset();
+        */
     };
     
+    /*
+    $scope.logout=function()
+    {
+        $http({
+            
+            method:'POST',
+            //http://info3180-project2-shamary.c9users.io:8080
+            url:"/api/users/logout",
+            headers:{'Content-Type':'application/x-www-form-urlencoded'},
+            transformRequest:function(obj){
+                var str = [];
+                for(var p in obj)
+                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                return str.join("&");
+            },
+        });
+    }
+    */
    
     
     $scope.getImg=function()
@@ -118,7 +145,7 @@ app.controller("myCtlr",function($scope,$http,cflow){
         //$scope.list_area="<img ng-repeat='item in wishlist track by $index' src='{{item}}' class='col-md-4'></img>"
         
         window.close($scope.window);
-    }
+    };
 });
 
 app.controller("myCtlr2",function($scope,$http,cflow){

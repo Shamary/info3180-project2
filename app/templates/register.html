@@ -1,9 +1,16 @@
 {% extends "base.html" %}
 
+
+
+
+
 {% block main %}
 
 <div class="reg_cont" ng-app="project" ng-controller="myCtlr">
+    <h2>Registration</h2>
     <form>
+        
+        {% include 'flash_messages.html' %}
         
         <input type="text" ng-model="fname" placeholder="firstname" required/><br>
         <input type="text" ng-model="lname" placeholder="lastname" required/><br>
@@ -18,9 +25,9 @@
         <input type="password" ng-model="ispassword" placeholder="Confirm password"/><br><br>
         
         
-        <!--<button type="button" ng-click="fsubmit()">Register</button>-->
+        <button type="submit" class="btn btn-primary" ng-click="fsubmit()">Register</button>
         
-        <input type="Submit" name="" ng-click="fsubmit()"/>
+        <!--<input type="Submit" name="" ng-click="fsubmit()"/>-->
         
         <!--<button type="button">Register</button>-->
     </form>

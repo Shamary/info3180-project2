@@ -2,8 +2,10 @@
 
 {% block main %}
   <div class="login-form center-block" ng-app="project" ng-controller="myCtlr">
-    <h2>Please Log in</h2>
+    <br>
+    {% include 'flash_messages.html' %}
     
+    <h2>Please Log in</h2>
     <form>
       <div class="form-group">
         <input type="text" ng-model="uname" placeholder="Enter your username" required/>
@@ -12,7 +14,7 @@
         <input type="password" ng-model="password" placeholder="Enter your password" required/>
       </div>
       
-      <button type="submit" name="submit" class="btn btn-primary btn-block" ng-click="login()">Log in</button>
+      <button type="submit" name="submit" class="btn btn-primary" ng-click="login()">Log in</button>
     </form>
   </div>
   

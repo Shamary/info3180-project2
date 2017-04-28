@@ -40,7 +40,7 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % (self.username)    
         
-        
+"""        
 class Wish(db.Model):
     
     itemid=db.Column(db.Integer,primary_key=True)
@@ -57,13 +57,29 @@ class Wish(db.Model):
         self.details = details
         self.url = address
         self.thumbnail = imageUrl
+"""
+
+class Wish(db.Model):
     
+    itemid=db.Column(db.Integer,unique=True)
+    userid=db.Column(db.ForeignKey('user.userid'),primary_key=True)
+    item_name=db.Column(db.String(50),primary_key=True)
+    #details=db.Column(db.String(255))
+    #thumbnail=db.Column(db.String(255))
+    item_url=db.Column(db.String(500))
+    
+    
+    def __init__(self, userid,item_name, item_url):
+        self.userid=userid
+        self.item_name = item_name
+        self.item_url = item_url
+
 
 # Relationship between user and item databases (many to many relationship)
 #
-wishlist = db.Table('wishlist',
+"""wishlist = db.Table('wishlist',
         db.Column('user_id', db.Integer, db.ForeignKey('user.userid')), 
-        db.Column('wish_id', db.Integer, db.ForeignKey('wish.itemid')))
+        db.Column('wish_id', db.Integer, db.ForeignKey('wish.itemid')))"""
         
         
         
