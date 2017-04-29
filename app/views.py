@@ -193,11 +193,9 @@ def wishes(userid):
         iname=request.form['iname']
         url=request.form['url']
         details=request.form['details'];
-        why_url=request.form['why_url']
+        why_url=request.form['sav_url']
         
         userid=session['uid'];
-        
-        
         
         wish=Wish(itemid=iid,userid=userid,item_name=iname,details=details,url=why_url,item_url=url)
         
@@ -214,13 +212,15 @@ def wishes(userid):
         url=[]
         names=[]
         img_ids=[]
+        dets=[]
         
         for u in wish:
             url+=[u.item_url]
             names+=[u.item_name]
             img_ids+=[u.itemid]
+            dets+=[u.details]
             
-        return jsonify({"status":"OK","error":None,"names":names,"ids":img_ids,"urls":url})
+        return jsonify({"status":"OK","error":None,"names":names,"ids":img_ids,"details":dets,"urls":url})
     
     
     
@@ -272,7 +272,7 @@ def share(to_name, to_addr, from_addr):
     #msg = 
     messsage = """From: {} <{}>\nTo: {} <{}>\nSubject: {}\n{}"""
     message_to_send = message.format(from_name, from_addr, to_name,to_addr,subject, msg)
-    # Credentials (if needed)
+    # Credentials (if needed. Needs to be gmail based)
     username = ''
     password = ''
     # The actual mail send

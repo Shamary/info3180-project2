@@ -12,7 +12,9 @@ app.controller("myCtlr",function($scope,$http,cflow){
     
     $scope.img_names=[];
     $scope.img_id=[];
+    $scope.dets=[];
     $scope.url="";
+    $scope.sav_url="";
     $scope.img_lst=[];
     $scope.wishlist=[];
     $scope.details="";
@@ -35,6 +37,7 @@ app.controller("myCtlr",function($scope,$http,cflow){
         $scope.wishlist=response.data.urls;
         $scope.img_names=response.data.names;
         $scope.img_id=response.data.ids;
+        $scope.dets=response.data.details;
         
         //alert($scope.wishlist[0]);
         
@@ -140,6 +143,7 @@ app.controller("myCtlr",function($scope,$http,cflow){
             $scope.img_lst=result.data.thumbnails;
         });*/
         
+        $scope.why_url=$scope.url;
         
         $http({
             
@@ -147,8 +151,7 @@ app.controller("myCtlr",function($scope,$http,cflow){
             url:"/api/thumbnails",
             
             params:{url:$scope.url}
-        })
-        .then(function(response){
+        }).then(function(response){
             $scope.img_lst=response.data.thumbnails;
         });
         
@@ -175,10 +178,8 @@ app.controller("myCtlr",function($scope,$http,cflow){
                 str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
                 return str.join("&");
             },
-            data:{iname:$scope.iname,url:$scope.url}
+            data:{iname:$scope.iname,url:$scope.url,sav_url:$scope.sav_url,details:$scope.details}
         });
-        
-        $scope.why_url=$scope.url;
         
         //alert(cflow.wishlist[0]);
         //$scope.list_area="<img ng-repeat='item in wishlist track by $index' src='{{item}}' class='col-md-4'></img>"
