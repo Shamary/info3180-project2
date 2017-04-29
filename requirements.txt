@@ -6,3 +6,4 @@ Flask-WTF
 psycopg2
 Flask-JWT
 Werkzeug==0.11.15
+gunicorn

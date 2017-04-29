@@ -6,6 +6,15 @@
 {% include 'flash_messages.html' %}
 
 <div ng-app="project" ng-controller="myCtlr2">
+    {% raw %}
+    <div ng-app="project" ng-controller="myCtlr">
+        <div ng-repeat="item in wishlist track by $index">
+            <label class="wish_names">{{img_names[$index]}}</label>
+            <img ng-src="{{item}}" width="230" class="col-md-4, img-thumbnail"></img>
+            <div class="delB" ng-value="img_id[$index]" ng-click="del_wish($event)">-</div>
+        </div>
+    </div><br><br>
+    {% endraw %}
     <div class="addB" ng-click="open()">+</div>
     <img ng-repeat="item in flow.wishlist" ng-src="{{item}}" class="col-md-4"></img>
 </div>

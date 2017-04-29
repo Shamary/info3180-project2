@@ -16,7 +16,7 @@ import smtplib
 import random
 
 from image_getter import *
-#from forms
+#from forms import *
 from models import User,Wish
 
 
@@ -261,7 +261,7 @@ def share(to_name, to_addr):
     from_name = session['uname']
     from_addr = session['username']
     subject='My Wishlist'
-    msg = 
+    #msg = 
     messsage = """From: {} <{}>\nTo: {} <{}>\nSubject: {}\n{}"""
     message_to_send = message.format(from_name, from_addr, to_name,to_addr,subject, msg)
     # Credentials (if needed)
