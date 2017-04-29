@@ -15,6 +15,7 @@ app.controller("myCtlr",function($scope,$http,cflow){
     $scope.url="";
     $scope.img_lst=[];
     $scope.wishlist=[];
+    $scope.details="";
     
     $scope.iname="";
     
@@ -24,6 +25,7 @@ app.controller("myCtlr",function($scope,$http,cflow){
         
     $scope.to_addr="";
     $scope.to_name="";
+    $scope.fro_addr="";
         
     $http.get("/gsession").then(function(result){
         //alert(result.data);
@@ -122,7 +124,7 @@ app.controller("myCtlr",function($scope,$http,cflow){
                 str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
                 return str.join("&");
             },
-            data:{to_addr:$scope.to_addr,to_name:$scope.to_name}
+            data:{to_addr:$scope.to_addr,to_name:$scope.to_name,from_addr:$scope.from_addr}
         }).then(function(result){
             //alert(result.data);
             window.location=result.data;
@@ -176,6 +178,8 @@ app.controller("myCtlr",function($scope,$http,cflow){
             data:{iname:$scope.iname,url:$scope.url}
         });
         
+        $scope.why_url=$scope.url;
+        
         //alert(cflow.wishlist[0]);
         //$scope.list_area="<img ng-repeat='item in wishlist track by $index' src='{{item}}' class='col-md-4'></img>"
         
@@ -208,31 +212,5 @@ app.controller("myCtlr2",function($scope,$http,cflow){
 
 var mservice=angular.module('mservice',[]).service('cflow',function(){
     this.wishlist=[];
-})
+});
 
-
-/*
-angular.module('app')
-.factory 'AuthDataService', [
-  'localStorageService'
-  '$base64'
-  '$http'
-  (localStorageService, $base64, $http) ->
-    current_auth_data = localStorageService.get('authorization_token')
-    if current_auth_data
-      $http.defaults.headers.common['Authorization'] = "Basic #{current_auth_data}"
-
-    return {
-      setAuthData: (authdata) ->
-        return unless authdata
-        encoded = $base64.encode(authdata)
-        localStorageService.set('authorization_token', encoded)
-        $http.defaults.headers.common['Authorization'] = "Basic #{encoded}"
-      clearAuthData: ->
-        localStorageService.remove('authorization_token')
-        $http.defaults.headers.common['Authorization'] = ''
-      getAuthData: ->
-        return localStorageService.get('authorization_token')
-    }
-]
-*/

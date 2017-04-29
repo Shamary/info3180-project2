@@ -64,8 +64,8 @@ class Wish(db.Model):
     itemid=db.Column(db.Integer,primary_key=True)
     userid=db.Column(db.ForeignKey('user.userid'),primary_key=True)
     item_name=db.Column(db.String(50),primary_key=True)
-    #details=db.Column(db.String(255))
-    #thumbnail=db.Column(db.String(255))
+    details=db.Column(db.String(255))
+    url=db.Column(db.String(255))
     item_url=db.Column(db.String(500))
     
     

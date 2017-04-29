@@ -7,6 +7,9 @@
     <form>
         <input type="text" ng-model="iname" placeholder="Item name"/><br>
         <input type="text" ng-model="url" placeholder="Enter URL" required/><br>
+        <textarea rows="4" cols="50" name="details" required></textarea><br>
+        
+        <input type="hidden" ng-model="sav_url" ng-bind-html="why_url"/>
         <input type="Submit" name="" ng-click="getImg()"/>
     </form>
     <br>
