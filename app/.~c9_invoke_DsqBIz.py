@@ -9,14 +9,15 @@ from app import app, db, login_m
 from flask import render_template, request, redirect, url_for, jsonify, Response, flash, session
 from bs4 import BeautifulSoup
 from flask_login import login_user, logout_user, current_user, login_required
-from werkzeug.security import generate_password_hash, check_password_hash
+#from flask_jwt import JWT, jwt_required, current_identity
+#from werkzeug.security import safe_str_cmp
 import requests
 import urlparse
 import smtplib
 import random
 
 from image_getter import *
-#from forms
+#from forms import *
 from models import User,Wish
 
 
@@ -46,7 +47,6 @@ def home():
     return redirect(url_for(page))
 
 
-
 @app.route('/wishlist')
 @login_required
 def wishlist():
@@ -62,38 +62,23 @@ def add_item():
 
 @app.route('/register')
 def register():
+    #form=RegisterForm()
     return render_template("register.html");
 
 
 
 @app.route('/login', methods=["GET"])
 def loginUI():
+    #form = LoginForm()
     return render_template("login.html")
-
 
 
 @app.route('/secure-page')
 @login_required
+#@jwt_required
 def secure_page():
     return render_template("secure-page.html")
 
-
-
-@app.route('/share')
-@login_required
-def share_wishlist():
-    if (request.method == 'POST'):
-        to_name=request.form['name']
-        to_addr=request.form['to_addr']
-        share(to_name, to_addr)
-        flash('Message Sent Successfully','success')
-        return url_for('home')
-    else:
-        
-        flash('Message Not Sent','danger')
-        return url_for('share_wishlist')
-        
-    return render_template("share.html")
 
 
 ######   
@@ -113,18 +98,22 @@ def signup():
     ispwd=request.form['ispassword']
     
     if (pwd == ispwd):
-        hash_pwd = generate_password_hash(pwd,method='pbkdf2:sha1',salt_length=8)
         
-        user=User(userid=uid,fname=fname,lname=lname,age=age,sex=gender,uname=uname,password=hash_pwd)
+        user=User(userid=uid,fname=fname,lname=lname,age=age,sex=gender,uname=uname,password=pwd)
         db.session.add(user)
         db.session.commit()
         flash('User Profile Added','success')
         return url_for('loginUI')
         
     else:
-        print('failure')
-        flash('Incorrect password entered','danger')
-        return url_for('register')
+        
+        flash('Incorrect password entered')
+        return redirect(url_for('register'))
+    
+    #pass
+
+    #return response
+    #res={"error":None,"status":"OK","message":"Success"}
     
     
 
@@ -135,16 +124,14 @@ def login():
     uname = request.form['uname']
     password = request.form['password']
     
-    user = User.query.filter_by(uname=uname).first()
-    temp = user.password
+    user = User.query.filter_by(uname=uname, password=password).first()
     
-    if (user and check_password_hash(temp, password)):
+    if (user):
     
         login_user(user)
         flash('Login Successful','success')
         
         session['username']=uname
-        session['uname']=user.fname+" "+user.lname
         session['uid']=user.userid
         
         #token=generate_token()
@@ -173,7 +160,6 @@ def logout():
     #####cleanup session
     session.pop('username',None)
     session.pop('uid',None)
-    session.pop('uname',None)
     
     return redirect(url_for('home'))
 
@@ -194,8 +180,6 @@ def wishes(userid):
         
         db.session.add(wish)
         db.session.commit()
-        
-        flash("Item added");
         
         return "OK"
         
@@ -254,15 +238,16 @@ def tview():
 @login_m.user_loader
 def load_user(id):
     return User.query.get(int(id))
+@app.route('/share_wishlist')
     
+@app.route('/api/share_wishlist')
+def share():
     
-def share(to_name, to_addr):
-    
-    from_name = session['uname']
-    from_addr = session['username']
-    subject='My Wishlist'
-    msg = 
-    messsage = """From: {} <{}>\nTo: {} <{}>\nSubject: {}\n{}"""
+    from_addr = request.form['']
+    to_addr = ''
+    to_name=''
+    subject=''
+    m
     message_to_send = message.format(from_name, from_addr, to_name,to_addr,subject, msg)
     # Credentials (if needed)
     username = ''
@@ -271,9 +256,40 @@ def share(to_name, to_addr):
     server = smtplib.SMTP('smtp.gmail.com:587')
     server.starttls()
     server.login(username, password)
-    server.sendmail(from_addr, to_addr, message_to_send)
+    server.sendmail(from_email, to_addr, message_to_send)
     server.quit()
     
+    
+ 
+ 
+    
+username_table = {u.uname: u for u in User.query.all()}
+userid_table = {u.userid: u for u in User.query.all()}
+
+"""jwt = JWT(app, authenticate, identity)
+
+@jwt.authentication_handler
+def authenticate(username, password):
+    user = username_table.get(username, None)
+    #if user and werkzeug.security.safe_str_cmp(user.password.encode('utf-8'), password.encode('utf-8')):
+    #    return user
+
+def identity(payload):
+    user_id = payload['identity']
+    return userid_table.get(user_id, None)
+
+@app.route('/protected')
+#@jwt_required()
+def protected():
+    return '%s' % current_identity
+
+def generate_token():
+    payload = {'sub': '12345', 'email': current_user.uname, 'password': current_user.password}
+    token = jwt.encode(payload, 'some secret', 
+    algorithm='HS256')
+    return jsonify(error=None, data={'token': token}, message="Token Generated")
+    
+"""
 
 
 ###

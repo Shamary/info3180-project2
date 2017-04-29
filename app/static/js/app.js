@@ -22,6 +22,9 @@ app.controller("myCtlr",function($scope,$http,cflow){
     
     $scope.id="";
         
+    $scope.to_addr="";
+    $scope.to_name="";
+        
     $http.get("/gsession").then(function(result){
         //alert(result.data);
         $scope.id=result.data;
@@ -86,7 +89,7 @@ app.controller("myCtlr",function($scope,$http,cflow){
                 return str.join("&");
             },
             data:{fname:$scope.fname,lname:$scope.lname,gender:$scope.gender,age:$scope.age,
-            uname:$scope.uname,password:$scope.password}
+            uname:$scope.uname,password:$scope.password,ispassword:$scope.ispassword}
         }).then(function(result){
             //alert(result.data);
             window.location=result.data;
@@ -104,14 +107,14 @@ app.controller("myCtlr",function($scope,$http,cflow){
         */
     };
     
-    /*
-    $scope.logout=function()
+
+    $scope.share=function()
     {
         $http({
             
             method:'POST',
             //http://info3180-project2-shamary.c9users.io:8080
-            url:"/api/users/logout",
+            url:"/share",
             headers:{'Content-Type':'application/x-www-form-urlencoded'},
             transformRequest:function(obj){
                 var str = [];
@@ -119,9 +122,13 @@ app.controller("myCtlr",function($scope,$http,cflow){
                 str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
                 return str.join("&");
             },
+            data:{to_addr:$scope.to_addr,to_name:$scope.to_name}
+        }).then(function(result){
+            //alert(result.data);
+            window.location=result.data;
         });
-    }
-    */
+    };
+
    
     
     $scope.getImg=function()
