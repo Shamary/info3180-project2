@@ -13,9 +13,9 @@
           <ul class="nav navbar-nav">
             
             {% if not current_user.is_authenticated %}
-              <li class="active"><a href="{{ url_for('home') }}">Home</a></li>
+              <li><a href="{{ url_for('home') }}">Home</a></li>
             {% else %}
-              <li class="active"><a href="{{ url_for('secure_page') }}">Home</a></li>
+              <li><a href="{{ url_for('secure_page') }}">Home</a></li>
             {% endif %}
             
             {% if current_user.is_authenticated %}

@@ -3,11 +3,22 @@
 {% block main %}
 
 {% raw %}
-<div ng-app="project" ng-app="project" ng-controller="myCtlr" class="search">
+<div ng-app="project" ng-controller="myCtlr" class="search">
     <form>
-        <input type="text" ng-model="iname" placeholder="Item name"/><br>
+        <div class="form-group">
+        <label class="f_label">Item name </label><br>
+        <input type="text" ng-model="iname" placeholder="Item name" required/><br>
+        </div>
+        
+        <div class="form-group">
+        <label class="f_label">Item URL </label><br>
         <input type="text" ng-model="url" placeholder="Enter URL" required/><br>
+        </div>
+        
+        <div class="form-group">
+        <label class="f_label">Item Description </label><br>
         <textarea rows="4" cols="50" ng-model="details" placeholder="Item description" required></textarea><br>
+        </div>
         
         <input type="hidden" ng-model="sav_url" ng-bind-html="why_url"/>
         <input type="Submit" name="" ng-click="getImg()"/>

@@ -142,18 +142,20 @@ app.controller("myCtlr",function($scope,$http,cflow){
         /*$http.get("/api/thumbnails",{params:{'url':$scope.url}}).then(function(result){
             $scope.img_lst=result.data.thumbnails;
         });*/
-        
-        $scope.why_url=$scope.url;
-        
-        $http({
+        if($scope.iname!=""&&$scope.url!=""&&$scope.details!="")
+        {
+            $scope.why_url=$scope.url;
             
-            method:'GET',
-            url:"/api/thumbnails",
-            
-            params:{url:$scope.url}
-        }).then(function(response){
-            $scope.img_lst=response.data.thumbnails;
-        });
+            $http({
+                
+                method:'GET',
+                url:"/api/thumbnails",
+                
+                params:{url:$scope.url}
+            }).then(function(response){
+                $scope.img_lst=response.data.thumbnails;
+            });
+        }
         
         //$scope.bopt="<img ng-repeat='img in img_lst track by $index' src='{{img}}' class='col-md-4, img-thumbnail' width='120'></img>";
         //document.getElementById("opt").innerHTML="<img ng-repeat='img in img_lst track by $index' src={{img}} class='col-md-4'></img>";
@@ -179,12 +181,14 @@ app.controller("myCtlr",function($scope,$http,cflow){
                 return str.join("&");
             },
             data:{iname:$scope.iname,url:$scope.url,sav_url:$scope.sav_url,details:$scope.details}
+        }).then(function()
+        {
+            window.close($scope.window);
         });
         
+        //alert($scope.url);
         //alert(cflow.wishlist[0]);
         //$scope.list_area="<img ng-repeat='item in wishlist track by $index' src='{{item}}' class='col-md-4'></img>"
-        
-        window.close($scope.window);
     };
     
     $scope.del_wish=function($event)

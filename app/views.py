@@ -165,7 +165,15 @@ def login():
 
 @app.route('/gsession')
 def gsession():
-    return str(session['uid'])
+    res="";
+    
+    try:
+        res=str(session['uid'])
+        
+    except:
+        pass
+    
+    return res
     
     
     

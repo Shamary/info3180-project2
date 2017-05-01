@@ -5,10 +5,22 @@
 
 {% include 'flash_messages.html' %}
 
-<p>Create a list of all things you're interested and share it with family and friends.</p>
-<p>Register or log in to start adding to your list</p>
-<a href="{{ url_for('register') }}">Sign Up</a><br>
-<a href="{{ url_for('loginUI') }}">Login</a>
+<div class="pageintro">
+    <p>Create a list of all things you're interested and share it with family and friends.</p>
+</div>
+
+<div class="pagemain">
+    <p>Register or log in to start adding to your list</p>
+    
+    <div class="padding">
+        <a href="{{ url_for('register') }}" class="btn btn-primary">Sign Up</a>
+    </div>
+    <div class="padding">
+        <a href="{{ url_for('loginUI') }}" class="btn btn-primary">Login</a>
+    </div>
+    
+</div>
+
 <!--
 <div ng-app="project" ng-controller="myCtlr2">
     <div class="addB" ng-click="open()">+</div>

@@ -5,8 +5,13 @@
 
 {% include 'flash_messages.html' %}
 
-<p>Welcome !</p><br>
-<p>Your current wishlist</p>
+<div class="pageintro">
+    <p>Welcome !</p>
+</div>
+
+<div class="pagemain">
+    <p>Your current wishlist</p>
+</div>
 
 {% raw %}
 <div ng-app="project" ng-controller="myCtlr">
@@ -18,8 +23,14 @@
     </div>
 </div><br><br>
 {% endraw %}
-<a href="{{ url_for('wishlist') }}">Add to Wishlist</a><br><br>
-<a href="{{ url_for('share_wishlistUI') }}">Click Here to Share Your Wishlist</a>
+
+<div class="padding">
+    <a href="{{ url_for('wishlist') }}" class="btn btn-primary">Add to Wishlist</a>
+</div>
+    
+<div class="padding">
+    <a href="{{ url_for('share_wishlistUI') }}" class="btn btn-primary">Share Your Wishlist</a>
+</div>
 
 {% endblock %}
 

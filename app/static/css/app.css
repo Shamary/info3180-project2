@@ -65,3 +65,21 @@ body {
 .wish_det{
     width:200px;
 }
+
+.pageintro{
+    font-size: 24px;
+}
+
+.pagemain{
+    font-size: 18px;
+}
+
+.padding{
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.form-group{
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
