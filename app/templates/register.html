@@ -12,6 +12,8 @@
     {% include 'flash_messages.html' %}
     
     <form>
+        
+        <label ng-bind-html="err" style="color:red"></label>
         <div class="form-group">
             <label class="f_label">Firstname: </label><br>
             <input type="text" ng-model="fname" placeholder="firstname" required/><br>

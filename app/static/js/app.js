@@ -28,6 +28,8 @@ app.controller("myCtlr",function($scope,$http,cflow){
     $scope.to_addr="";
     $scope.to_name="";
     $scope.fro_addr="";
+    
+    $scope.err="";
         
     $http.get("/gsession").then(function(result){
         //alert(result.data);
@@ -81,24 +83,32 @@ app.controller("myCtlr",function($scope,$http,cflow){
         /*var data="fname= "+$scope.fname+"lname= "+$scope.lname+"gender= "+$scope.gender+"age= "+
         $scope.age+"uname= "+$scope.uname+"password= "+$scope.password;*/
         
-        $http({
-            
-            method:'POST',
-            //http://info3180-project2-shamary.c9users.io:8080
-            url:"/api/users/register",
-            headers:{'Content-Type':'application/x-www-form-urlencoded'},
-            transformRequest:function(obj){
-                var str = [];
-                for(var p in obj)
-                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                return str.join("&");
-            },
-            data:{fname:$scope.fname,lname:$scope.lname,gender:$scope.gender,age:$scope.age,
-            uname:$scope.uname,password:$scope.password,ispassword:$scope.ispassword}
-        }).then(function(result){
-            //alert(result.data);
-            window.location=result.data;
-        });
+        if($scope.fname!=""&&$scope.lname!=""&&$scope.uname!=""&&$scope.password!=""&&$scope.ispassword!=""&&$scope.password==$scope.ispassword)
+        {
+        
+            $http({
+                
+                method:'POST',
+                //http://info3180-project2-shamary.c9users.io:8080
+                url:"/api/users/register",
+                headers:{'Content-Type':'application/x-www-form-urlencoded'},
+                transformRequest:function(obj){
+                    var str = [];
+                    for(var p in obj)
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    return str.join("&");
+                },
+                data:{fname:$scope.fname,lname:$scope.lname,gender:$scope.gender,age:$scope.age,
+                uname:$scope.uname,password:$scope.password,ispassword:$scope.ispassword}
+            }).then(function(result){
+                //alert(result.data);
+                window.location=result.data;
+            });
+        }
+        else if($scope.password!=$scope.ispassword)
+        {
+            $scope.err="passwords must match"
+        }
         /*.success(function(data,status,headers,config)
         {
            //alert(data); 
